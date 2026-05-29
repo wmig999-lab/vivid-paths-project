@@ -1,9 +1,21 @@
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { cloudflare } from "@cloudflare/vite-plugin";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  tanstackStart: {
-    server: { entry: "server" },
-    // Добавляем настройки nitro прямо здесь:
-    nitro: true, 
-  },
+    plugins: [
+          cloudflare({
+                  persistState: false,
+          }),
+          TanStackRouterVite({
+                  routesDirectory: "./src/routes",
+                  generatedRouteTree: "./src/routeTree.gen.ts",
+          }),
+          react(),
+          tsconfigPaths(),
+          tailwindcss(),
+        ],
 });
